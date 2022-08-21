@@ -1,43 +1,39 @@
-import aiohttp
+import httpx
 
 from ..types import *
 from ..exceptions import *
 
 
-class AioCryptoPay(BaseCryptoPay):
+class CryptoPay(BaseCryptoPay):
     base_url = "https://pay.crypt.bot/api/"
 
     def __init__(self, token: str):
         super().__init__(token)
-        self.session = aiohttp.ClientSession(
+        self.session = httpx.Client(
             headers={
                 "Host": "pay.crypt.bot",
                 "Crypto-Pay-API-Token": token
             }
         )
 
-    async def close(self):
-        await self.session.close()
-
-    async def _make_request(self, method, method_type, **kwargs) -> dict:
+    def _make_request(self, method, method_type, **kwargs) -> dict:
         request = getattr(self.session, method_type)
 
-        response = await request(self.base_url + method, json=kwargs)
-        response = await response.json()
+        response = request(self.base_url + method, json=kwargs)
+        response = response.json()
 
         if response.get("ok"):
             return response.get("result")
 
         else:
             error = response.get("error")
-            await self.close()
             raise CryptoPayException(error)
 
-    async def get_me(self) -> App:
-        response = await self._make_request("getMe", "get")
+    def get_me(self) -> App:
+        response = self._make_request("getMe", "get")
         return App(**response)
 
-    async def create_invoice(
+    def create_invoice(
             self,
             asset: str,
             amount: float,
@@ -54,15 +50,15 @@ class AioCryptoPay(BaseCryptoPay):
 
         params = self._get_params(locals(), "createInvoice")
 
-        response = await self._make_request(
+        response = self._make_request(
             "createInvoice",
-            "get",
+            "post",
             **params
         )
 
         return Invoice(**response)
 
-    async def transfer(
+    def transfer(
             self,
             user_id: int,
             asset: str,
@@ -75,15 +71,15 @@ class AioCryptoPay(BaseCryptoPay):
 
         params = self._get_params(locals(), "transfer")
 
-        response = await self._make_request(
+        response = self._make_request(
             "transfer",
-            "get",
+            "post",
             **params
         )
 
         return Transfer(**response)
 
-    async def get_invoices(
+    def get_invoices(
             self,
             asset: Optional[str] = None,
             invoice_ids: Optional[Union[int, List[int]]] = "",
@@ -98,9 +94,9 @@ class AioCryptoPay(BaseCryptoPay):
 
         params = self._get_params(locals(), "createInvoice")
 
-        response = await self._make_request(
+        response = self._make_request(
             "getInvoices",
-            "get",
+            "post",
             **params
         )
 
@@ -108,50 +104,20 @@ class AioCryptoPay(BaseCryptoPay):
 
         return invoices
 
-    async def get_balance(self) -> List[Wallet]:
-        response = await self._make_request("getBalance", "get")
+    def get_balance(self) -> List[Wallet]:
+        response = self._make_request("getBalance", "get")
         wallets = [Wallet(**wallet) for wallet in response]
 
         return wallets
 
-    async def get_exchange_rates(self) -> List[ExchangeRate]:
-        response = await self._make_request("getExchangeRates", "get")
+    def get_exchange_rates(self) -> List[ExchangeRate]:
+        response = self._make_request("getExchangeRates", "get")
         exchange_rates = [ExchangeRate(**exchange_rate) for exchange_rate in response]
 
         return exchange_rates
 
-    async def get_currencies(self) -> List[Currency]:
-        response = await self._make_request("getCurrencies", "get")
-        print(response)
+    def get_currencies(self) -> List[Currency]:
+        response = self._make_request("getCurrencies", "get")
         currencies = [Currency(**currency) for currency in response]
 
         return currencies
-
-
-'''
-Передаю привет:
-https://t.me/LordS_LOLZ
-https://t.me/MOLUTBA
-https://t.me/derkonw
-https://t.me/mrrooooopert
-https://t.me/zen220
-https://t.me/Warkraftboy
-https://t.me/Reboler
-https://t.me/rage_nosoft
-https://t.me/crypt0xTG
-https://t.me/lolzwork
-Horosh(oleg383 вроде хз убрал юзернейм)
-https://t.me/raptinside
-
-Ascii-арт с валему (https://t.me/walemu1337 (пес)):
-
-┈╱╲┏┓▕╲▂▂▂╱▏
-╱┏┓╲▏┈▏┻╯▃┻╲
-╭━━╮╲┈▏╭┳┻┳╮▏
-┃╭╮┃▕┈▏┣╮┈┈┃▏
-┃┃╰╯▕╱╲╰┻┻┻╱
-┃┃╱▔▔▕▕▔▕▔▔
-┃╰▏▔╲▕▕╱▏▏
-╰━╲▂▂▕▂▏▂▏
-
-'''

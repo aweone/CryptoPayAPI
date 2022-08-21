@@ -6,6 +6,7 @@ $ pip install CryptoPayAPI
 ```
 
 ### Usage
+#### Asynchronous
 ```Python
 from CryptoPayAPI.AioCryptoPay import AioCryptoPay
 from CryptoPayAPI.types import Asset
@@ -30,6 +31,26 @@ async def main():
     await cryptopay.close()
 
 asyncio.run(main())
+
+```
+
+#### Synchronous
+```Python
+from CryptoPayAPI.CryptoPay import CryptoPay
+from CryptoPayAPI.types import Asset
+
+# create session
+cryptopay = CryptoPay(token="token")
+
+# get balance wallets
+cryptopay.get_balance()
+
+# create invoice
+invoice = cryptopay.create_invoice(asset=Asset.BTC, amount=10)
+print(invoice.pay_url)
+
+# get list of inovices
+invoices = cryptopay.get_invoices(asset=Asset.TON)
 
 ```
 
