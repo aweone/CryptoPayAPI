@@ -34,5 +34,7 @@ The library is fully compatible with the official api - https://help.crypt.bot/c
 
 ### Donation
 BTC - bc1qltq6d7lzprr9hhpya4pptwj3997gpwkzhulksh
+
 ETH - 0x6727e912855A289A340Ba1213E1038AdB0E3CDb9
+
 USDT (TRC20) - TH5JtPd7siwCb4AnHyGniMz52gtysY3zEJ
