@@ -1,5 +1,9 @@
 # CryptoPayAPI
 Simple library for https://t.me/CryptoBot
+### Installation
+```
+$ pip install CryptoPayAPI
+```
 
 ### Usage
 ```Python
