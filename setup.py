@@ -2,6 +2,7 @@ from setuptools import setup
 
 from CryptoPayAPI import __version__
 
+
 def read_requirements():
     with open("requirements.txt", "r") as f:
         return [r for r in f.read().split("\n") if r]
@@ -15,7 +16,13 @@ def read_file(filename):
 setup(
     name="CryptoPayAPI",
     version=__version__,
-    packages=["CryptoPayAPI"],
+    packages=[
+        "CryptoPayAPI",
+        "CryptoPayAPI.AioCryptoPay",
+        "CryptoPayAPI.CryptoPay",
+        "CryptoPayAPI.exceptions",
+        "CryptoPayAPI.types"
+    ],
     url="https://github.com/aweone/CryptoPayAPI",
     license="MIT License",
     author="aweone",

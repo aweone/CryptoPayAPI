@@ -30,7 +30,6 @@ class AioCryptoPay(BaseCryptoPay):
 
         else:
             error = response.get("error")
-            await self.close()
             raise CryptoPayException(error)
 
     async def get_me(self) -> App:
