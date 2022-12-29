@@ -19,7 +19,12 @@ class CryptoPay(BaseCryptoPay):
     def _make_request(self, method, method_type, **kwargs) -> dict:
         request = getattr(self.session, method_type)
 
-        response = request(self.base_url + method, json=kwargs)
+        if kwargs:
+            response = request(self.base_url + method, json=kwargs)
+
+        else:
+            response = request(self.base_url + method)
+
         response = response.json()
 
         if response.get("ok"):
