@@ -27,7 +27,7 @@ setup(
     license="MIT License",
     author="aweone",
     author_email="aweonegithub@gmail.com",
-    description="Simple libary for https://t.me/CryptoBot",
+    description="Simple library for https://t.me/CryptoBot",
     install_requires=read_requirements(),
     project_urls={
         "Source Code": "https://github.com/aweone/CryptoPayAPI",
